@@ -118,7 +118,14 @@
 
             <!-- AI Forecast -->
             <div class="card forecast-card animate__animated animate__fadeInRight">
-                <h3><i data-lucide="trending-up"></i> AI Forecast — Next 7 Days</h3>
+                <h3 class="card-heading-with-info">
+                    <span><i data-lucide="trending-up"></i> AI Forecast — Next 7 Days</span>
+                    <div class="info-tooltip">
+                        <i data-lucide="help-circle" class="info-icon"></i>
+                        <div class="tooltip-text">Based on 1-year linear regression. Projects long-term trends but
+                            ignores short-term volatility.</div>
+                    </div>
+                </h3>
                 <div id="forecastList" class="forecast-list">
                     <div class="loading-shimmer"></div>
                 </div>
@@ -126,7 +133,14 @@
 
             <!-- Trading Agent -->
             <div class="card agent-card animate__animated animate__fadeInRight" style="animation-delay:.1s">
-                <h3><i data-lucide="cpu"></i> Trading Agent Alpha</h3>
+                <h3 class="card-heading-with-info">
+                    <span><i data-lucide="cpu"></i> Trading Agent Alpha</span>
+                    <div class="info-tooltip">
+                        <i data-lucide="help-circle" class="info-icon"></i>
+                        <div class="tooltip-text">Analyzes short-term momentum (MA20/MA50 cross & RSI-14). Can trigger
+                            SELL if stock is temporarily overbought, despite a positive 1-year forecast.</div>
+                    </div>
+                </h3>
                 <div class="agent-status">
                     <div class="status-indicator online"></div>
                     <span>Signals from RSI-14 &amp; MA Cross</span>
