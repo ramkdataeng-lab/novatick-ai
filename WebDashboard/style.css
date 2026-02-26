@@ -25,6 +25,15 @@ body {
     color: var(--text-main);
     min-height: 100vh;
     overflow-x: hidden;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    -webkit-text-size-adjust: 100%;
+}
+
+* {
+    -webkit-tap-highlight-color: transparent;
 }
 
 /* Ambient glow background */
@@ -136,6 +145,7 @@ body {
     font-size: 0.85rem;
     transition: opacity 0.2s;
     white-space: nowrap;
+    touch-action: manipulation;
 }
 
 .search-bar button:hover {
@@ -477,6 +487,7 @@ body {
     font-size: 0.9rem;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s, background 0.3s;
+    touch-action: manipulation;
 }
 
 .btn-primary:hover {
