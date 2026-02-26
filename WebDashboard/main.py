@@ -5,7 +5,6 @@ from fastapi.staticfiles import StaticFiles
 import yfinance as yf
 import pandas as pd
 import numpy as np
-from sklearn.linear_model import LinearRegression
 from datetime import timedelta
 import os
 
@@ -48,22 +47,30 @@ async def get_stock_data(ticker: str):
                 "volume": int(row["Volume"]),
             })
 
-        # Linear Regression forecast for next 7 days
-        df_reset = df.reset_index()
-        df_reset["days"] = range(len(df_reset))
-        X = df_reset[["days"]].values
-        y = df_reset["Close"].values
-
-        model = LinearRegression()
-        model.fit(X, y)
-
-        future_days = np.array([[len(df_reset) + i] for i in range(1, 8)])
-        predictions = model.predict(future_days)
-
+        # Manual Linear Regression forecast for next 7 days
+        days = list(range(len(df)))
+        closes = df["Close"].tolist()
+        
+        n = len(days)
+        sum_x = sum(days)
+        sum_y = sum(closes)
+        sum_xy = sum(x * y for x, y in zip(days, closes))
+        sum_xx = sum(x * x for x in days)
+        
+        denominator = (n * sum_xx - sum_x * sum_x)
+        if denominator == 0:
+            m = 0
+            b = sum_y / n if n > 0 else 0
+        else:
+            m = (n * sum_xy - sum_x * sum_y) / denominator
+            b = (sum_y - m * sum_x) / n
+            
         forecast = []
         last_date = df.index[-1]
-        for i, pred in enumerate(predictions):
-            future_date = (last_date + timedelta(days=i + 1)).strftime("%Y-%m-%d")
+        for i in range(1, 8):
+            future_x = n - 1 + i
+            pred = m * future_x + b
+            future_date = (last_date + timedelta(days=i)).strftime("%Y-%m-%d")
             forecast.append({
                 "date": future_date,
                 "predicted_close": round(float(pred), 2),
