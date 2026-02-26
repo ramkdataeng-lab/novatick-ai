@@ -118,7 +118,7 @@ async def get_stock_data(ticker: str):
 
         info = stock.info
         summary_raw = info.get("longBusinessSummary", "No company summary available.")
-        summary = summary_raw[:350] + "..." if len(summary_raw) > 350 else summary_raw
+        summary = summary_raw[:200] + "..." if len(summary_raw) > 200 else summary_raw
 
         return {
             "ticker": ticker.upper(),

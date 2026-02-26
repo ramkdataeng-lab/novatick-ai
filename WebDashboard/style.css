@@ -511,8 +511,8 @@ body {
 
 .info-card p {
     color: var(--text-dim);
-    line-height: 1.65;
-    font-size: 0.88rem;
+    line-height: 1.5;
+    font-size: 0.82rem;
     margin-top: 0.75rem;
 }
 
