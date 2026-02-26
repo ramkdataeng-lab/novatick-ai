@@ -138,7 +138,14 @@ function renderChart(history, forecast) {
         xaxis: { type: 'datetime' },
         yaxis: { tooltip: { enabled: true }, labels: { formatter: v => `$${v.toFixed(0)}` } },
         grid: { borderColor: 'rgba(255,255,255,0.05)' },
-        legend: { labels: { colors: '#a1a1aa' } },
+        legend: {
+            position: 'top',
+            horizontalAlign: 'left',
+            floating: true,
+            offsetY: 10,
+            offsetX: 10,
+            labels: { colors: '#a1a1aa' }
+        },
         tooltip: { theme: 'dark' },
     };
 
