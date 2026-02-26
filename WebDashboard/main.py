@@ -25,6 +25,10 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 def serve_index():
     return FileResponse(os.path.join(BASE_DIR, "index.html"))
 
+@app.get("/top50.html")
+def serve_top50():
+    return FileResponse(os.path.join(BASE_DIR, "top50.html"))
+
 
 @app.get("/api/stock/{ticker}")
 async def get_stock_data(ticker: str):

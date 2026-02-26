@@ -28,6 +28,10 @@
             "dest": "/$1"
         },
         {
+            "src": "/top50.html",
+            "dest": "/top50.html"
+        },
+        {
             "src": "/(.*)",
             "dest": "/index.html"
         }
