@@ -354,24 +354,25 @@ body {
 
 /* Agent */
 .agent-card {
-    background: linear-gradient(145deg, rgba(254, 252, 191, 0.95), rgba(250, 240, 137, 0.95));
-    /* Light yellow background */
-    border: 1px solid rgba(236, 201, 75, 0.5);
-    color: #1a202c;
-    /* Dark text for contrast */
+    background: linear-gradient(145deg, rgba(30, 27, 75, 0.4), rgba(49, 46, 129, 0.2));
+    /* Deep soft indigo glow */
+    border: 1px solid rgba(99, 102, 241, 0.4);
+    /* Primary color border */
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.1);
+    color: var(--text-main);
 }
 
-/* Override h3 and tooltip icon colors inside agent card for visibility */
+/* Revert h3 and tooltip icon colors inside agent card back to light */
 .agent-card h3,
 .agent-card .info-icon,
 .agent-card .agent-status {
-    color: #2d3748;
+    color: var(--text-dim);
 }
 
-/* Adjust signal box to fit the new light theme, or keep it dark for pop. Let's make it slightly softer dark */
+/* Adjust signal box to fit */
 .agent-card .signal-box {
-    background: linear-gradient(145deg, rgba(26, 32, 44, 0.9), rgba(45, 55, 72, 0.95));
-    border: 1px solid rgba(236, 201, 75, 0.3);
+    background: linear-gradient(145deg, rgba(15, 23, 42, 0.9), rgba(5, 10, 20, 0.95));
+    border: 1px solid rgba(99, 102, 241, 0.3);
 }
 
 .agent-status {
