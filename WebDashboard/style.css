@@ -329,9 +329,10 @@ body {
 }
 
 .signal-box {
-    background: rgba(15, 23, 42, 0.8); /* Dark slate background */
-    border: 1px solid rgba(99, 102, 241, 0.2);
-    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+    background: linear-gradient(145deg, rgba(15, 23, 42, 0.9), rgba(5, 10, 20, 0.95));
+    /* Updated background */
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(99, 102, 241, 0.1);
     padding: 1.25rem;
     border-radius: 14px;
     text-align: center;
@@ -339,20 +340,38 @@ body {
 }
 
 .signal-label {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--text-dim);
+    letter-spacing: 1.5px;
+    color: #e2e8f0;
+    /* Changed font color */
+    font-weight: 600;
     display: block;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.4rem;
 }
 
 .signal-value {
-    display: block;
-    font-size: 2rem;
+    display: inline-block;
+    font-size: 2.2rem;
     font-weight: 800;
     color: var(--primary);
-    letter-spacing: 2px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    animation: neon-wave 2s ease-in-out infinite;
+}
+
+@keyframes neon-wave {
+
+    0%,
+    100% {
+        text-shadow: 0 0 5px currentColor, 0 0 15px currentColor;
+        transform: translateY(0px) scale(1);
+    }
+
+    50% {
+        text-shadow: 0 0 10px currentColor, 0 0 25px currentColor, 0 0 40px currentColor;
+        transform: translateY(-4px) scale(1.05);
+    }
 }
 
 .btn-primary {
