@@ -7,6 +7,8 @@ import pandas as pd
 import numpy as np
 from datetime import timedelta
 import os
+import urllib.request
+import xml.etree.ElementTree as ET
 
 app = FastAPI(title="NovaTick AI Engine")
 
@@ -142,6 +144,51 @@ async def get_stock_data(ticker: str):
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+
+# ─── News Endpoint ───────────────────────────────────────────────────────────
+@app.get("/api/news/{ticker}")
+def get_news(ticker: str):
+    """Fetch latest news headlines via Yahoo Finance RSS."""
+    try:
+        url = f"https://feeds.finance.yahoo.com/rss/2.0/headline?s={ticker.upper()}&region=US&lang=en-US"
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=6) as resp:
+            raw = resp.read()
+        root = ET.fromstring(raw)
+        ns = ""
+        items = root.findall(".//item")
+        articles = []
+        for item in items[:6]:  # top 6 headlines
+            title = item.findtext("title", "").strip()
+            link  = item.findtext("link", "").strip()
+            pub   = item.findtext("pubDate", "").strip()
+            # Simple sentiment: check for positive/negative keywords
+            title_lower = title.lower()
+            pos_words = ["rise", "gain", "surge", "jump", "beat", "record", "rally", "up", "bull", "strong", "growth", "profit"]
+            neg_words = ["fall", "drop", "loss", "miss", "crash", "decline", "down", "bear", "weak", "layoff", "cut", "warn"]
+            pos = sum(1 for w in pos_words if w in title_lower)
+            neg = sum(1 for w in neg_words if w in title_lower)
+            sentiment = "positive" if pos > neg else ("negative" if neg > pos else "neutral")
+            articles.append({"title": title, "link": link, "pub": pub, "sentiment": sentiment})
+        return {"ticker": ticker.upper(), "articles": articles}
+    except Exception as e:
+        # Fallback: try yfinance news
+        try:
+            stock = yf.Ticker(ticker.upper())
+            news = stock.news or []
+            articles = []
+            for n in news[:6]:
+                articles.append({
+                    "title": n.get("title", ""),
+                    "link": n.get("link", ""),
+                    "pub": "",
+                    "sentiment": "neutral"
+                })
+            return {"ticker": ticker.upper(), "articles": articles}
+        except:
+            raise HTTPException(status_code=500, detail=str(e))
 
 
 # Serve CSS, JS, and other static assets AFTER API routes

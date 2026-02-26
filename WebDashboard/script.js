@@ -15,6 +15,7 @@ async function fetchStockData(ticker) {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const data = await response.json();
         updateUI(data);
+        fetchNews(ticker); // fire news fetch in parallel
         return data;
     } catch (err) {
         console.error('Fetch error:', err);
@@ -101,6 +102,33 @@ function updateSignalPanel(ind) {
     document.getElementById('rsiDisplay').className = `status ${rsiStatus}`;
     document.getElementById('maDisplay').textContent = `${ind.ma_trend} (MA20: $${ind.ma20})`;
     document.getElementById('maDisplay').className = `status ${maStatus}`;
+}
+
+// ─── Live News ────────────────────────────────────────────────────────────────
+async function fetchNews(ticker) {
+    const container = document.getElementById('newsContainer');
+    if (!container) return;
+    container.innerHTML = '<div class="loading-shimmer" style="height:80px;"></div>';
+    try {
+        const res = await fetch(`/api/news/${ticker.toUpperCase()}`);
+        if (!res.ok) throw new Error('No news');
+        const data = await res.json();
+        if (!data.articles || data.articles.length === 0) {
+            container.innerHTML = '<p style="color:var(--text-dim);font-size:0.82rem;padding-top:0.5rem;">No recent news found.</p>';
+            return;
+        }
+        container.innerHTML = data.articles.map(a => {
+            const sentColor = a.sentiment === 'positive' ? 'var(--positive)' : (a.sentiment === 'negative' ? 'var(--negative)' : 'var(--warning)');
+            const sentLabel = a.sentiment === 'positive' ? '▲ Bullish' : (a.sentiment === 'negative' ? '▼ Bearish' : '● Neutral');
+            return `
+            <a class="news-item" href="${a.link}" target="_blank" rel="noopener">
+                <span class="news-title">${a.title}</span>
+                <span class="news-sentiment" style="color:${sentColor};">${sentLabel}</span>
+            </a>`;
+        }).join('');
+    } catch (e) {
+        container.innerHTML = '<p style="color:var(--text-dim);font-size:0.82rem;padding-top:0.5rem;">News unavailable.</p>';
+    }
 }
 
 // ─── Chart rendering ─────────────────────────────────────────────────────────

@@ -738,6 +738,54 @@ footer {
     color: #a5b4fc;
 }
 
+/* ─── News Card ───────────────────────────────────────────────────────────── */
+.news-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    max-height: 180px;
+    overflow-y: auto;
+}
+
+.news-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    transition: background 0.15s;
+}
+
+.news-item:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.news-item:last-child {
+    border-bottom: none;
+}
+
+.news-title {
+    color: var(--text-dim);
+    font-size: 0.78rem;
+    line-height: 1.45;
+    flex: 1;
+    transition: color 0.2s;
+}
+
+.news-item:hover .news-title {
+    color: var(--text-main);
+}
+
+.news-sentiment {
+    font-size: 0.72rem;
+    font-weight: 700;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
 /* ─── Responsive ──────────────────────────────────────────────────────────── */
 @media (max-width: 1100px) {
     .dashboard-grid {
