@@ -1,5 +1,5 @@
 """
-AlphaTrade Bot v2 — Improved Automated Paper Trading Agent
+""" NovaTick Bot v2 — Improved Automated Paper Trading Agent """
 ===========================================================
 Improvements over v1 (learned from live data):
 
@@ -89,7 +89,7 @@ logging.basicConfig(
         logging.StreamHandler(),
     ],
 )
-log = logging.getLogger("AlphaTrade-v2")
+log = logging.getLogger("NovaTick-v2")
 
 # ─── Alpaca client ─────────────────────────────────────────────────────────────
 trade_client = TradingClient(API_KEY, SECRET_KEY, paper=PAPER)
@@ -250,7 +250,7 @@ def get_spy_rsi() -> float:
 # ─── Main scan ────────────────────────────────────────────────────────────────
 def scan():
     log.info("=" * 65)
-    log.info("AlphaTrade v2 — scan started")
+    log.info("NovaTick v2 — scan started")
 
     acct      = trade_client.get_account()
     equity    = float(acct.equity)
@@ -329,7 +329,7 @@ def scan():
 
 # ─── Run loop ─────────────────────────────────────────────────────────────────
 def run():
-    log.info("AlphaTrade Bot v2 starting")
+    log.info("NovaTick Bot v2 starting")
     log.info(f"Watchlist : {len(WATCHLIST)} stocks")
     log.info(f"Paper mode: {PAPER}")
     log.info(f"Strategy  : RSI({RSI_OVERSOLD}/{RSI_OVERBOUGHT}) + MACD + SL{STOP_LOSS_PCT*100:.0f}% TP+{TAKE_PROFIT_PCT*100:.0f}%")

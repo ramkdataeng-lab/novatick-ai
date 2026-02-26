@@ -1,5 +1,5 @@
 """
-AlphaTrade - 5-Day Strategy Backtest
+NovaTick - 5-Day Strategy Backtest
 ======================================
 Replays the exact bot v2 strategy on the last 5 trading days
 using hourly OHLCV data from yfinance.
@@ -84,7 +84,7 @@ def compute_atr(df, period=14):
 
 # --- Fetch data ---------------------------------------------------------------
 print("=" * 65)
-print("  AlphaTrade - 5-Day Backtest Engine")
+print("  NovaTick - 5-Day Backtest Engine")
 print(f"  Simulation date: {datetime.now().strftime('%Y-%m-%d %H:%M')}")
 print(f"  Capital: ${STARTING_CAPITAL:,.0f}  |  Stocks: {len(WATCHLIST)}")
 print("=" * 65)

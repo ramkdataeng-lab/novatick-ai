@@ -9,7 +9,7 @@ from sklearn.linear_model import LinearRegression
 from datetime import timedelta
 import os
 
-app = FastAPI(title="AlphaTrade AI Engine")
+app = FastAPI(title="NovaTick AI Engine")
 
 # Enable CORS for frontend
 app.add_middleware(
@@ -139,5 +139,5 @@ app.mount("/static", StaticFiles(directory=BASE_DIR), name="static")
 
 if __name__ == "__main__":
     import uvicorn
-    print("AlphaTrade AI starting on http://localhost:8000")
+    print("NovaTick AI starting on http://localhost:8000")
     uvicorn.run(app, host="0.0.0.0", port=8000, reload=False)

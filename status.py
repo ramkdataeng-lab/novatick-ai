@@ -17,7 +17,7 @@ pnl_today     = equity - last_equity
 pnl_pct       = (pnl_today / last_equity * 100) if last_equity else 0
 
 print("=" * 55)
-print("  AlphaTrade Bot — Account Status")
+print("  NovaTick Bot — Account Status")
 print(f"  {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 print("=" * 55)
 print(f"  Portfolio Value : ${portfolio_val:>12,.2f}")
