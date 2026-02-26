@@ -353,6 +353,27 @@ body {
 }
 
 /* Agent */
+.agent-card {
+    background: linear-gradient(145deg, rgba(254, 252, 191, 0.95), rgba(250, 240, 137, 0.95));
+    /* Light yellow background */
+    border: 1px solid rgba(236, 201, 75, 0.5);
+    color: #1a202c;
+    /* Dark text for contrast */
+}
+
+/* Override h3 and tooltip icon colors inside agent card for visibility */
+.agent-card h3,
+.agent-card .info-icon,
+.agent-card .agent-status {
+    color: #2d3748;
+}
+
+/* Adjust signal box to fit the new light theme, or keep it dark for pop. Let's make it slightly softer dark */
+.agent-card .signal-box {
+    background: linear-gradient(145deg, rgba(26, 32, 44, 0.9), rgba(45, 55, 72, 0.95));
+    border: 1px solid rgba(236, 201, 75, 0.3);
+}
+
 .agent-status {
     display: flex;
     align-items: center;
@@ -635,20 +656,105 @@ footer {
     }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 768px) {
     .navbar {
         flex-wrap: wrap;
+        padding: 1rem;
+        gap: 0.8rem;
+    }
+
+    .nav-links {
+        order: 2;
+        gap: 0.8rem;
+    }
+
+    .wallet-info {
+        order: 3;
     }
 
     .search-bar {
+        order: 4;
         max-width: 100%;
+        width: 100%;
+        margin-top: 0.2rem;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+        gap: 1rem;
     }
 
     .bottom-grid {
         grid-template-columns: 1fr;
+        gap: 1rem;
     }
 
     .sidebar {
         grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .card {
+        padding: 1.1rem;
+    }
+
+    .stock-title h1 {
+        font-size: 1.35rem;
+    }
+
+    .price-value {
+        font-size: 1.3rem;
+    }
+
+    .chart-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.3rem;
+    }
+
+    .chart-controls button {
+        padding: 0.3rem 0.5rem;
+        font-size: 0.75rem;
+    }
+
+    .tooltip-text {
+        right: auto;
+        left: -200px;
+        /* Prevent tooltip from going off-screen to the right */
+        width: 250px;
+    }
+
+    .signal-value {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        font-size: 1.2rem;
+    }
+
+    .logo-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .nav-links {
+        font-size: 0.8rem;
+        gap: 0.5rem;
+    }
+
+    .virtual-balance .value {
+        font-size: 0.95rem;
+    }
+
+    .card-header {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .stock-meta {
+        margin-top: 0.2rem;
     }
 }
