@@ -9,8 +9,9 @@ enum APIError: Error {
 class APIService {
     static let shared = APIService()
     
-    // Defaulting to the local host for simulator testing, or Vercel URL
-    let baseURL = "http://localhost:8000/api/stock/"
+    // The production Vercel API URL. Change this to your actual Vercel deployment URL.
+    // e.g., "https://your-vercel-app.vercel.app/api/stock/"
+    let baseURL = "https://novatick-api.vercel.app/api/stock/"
     
     private init() {}
     
