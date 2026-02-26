@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlphaTrade AI | Stock Intelligence & Predictive Trading</title>
+    <meta name="description" content="AI-powered stock analysis, predictive forecasting, and paper trading dashboard.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+</head>
+
+<body>
+    <div class="glass-bg"></div>
+
+    <!-- ─── Navbar ─────────────────────────────────────────── -->
+    <nav class="navbar animate__animated animate__fadeInDown">
+        <div class="logo">
+            <i data-lucide="zap" class="logo-icon"></i>
+            <span>AlphaTrade <span class="ai-tag">AI</span></span>
+        </div>
+        <div class="search-bar">
+            <i data-lucide="search"></i>
+            <input type="text" id="tickerInput" placeholder="Ticker (NVDA, TSLA, BTC-USD…)" value="NVDA">
+            <button id="analyzeBtn">Analyze</button>
+        </div>
+        <div class="wallet-info">
+            <i data-lucide="wallet"></i>
+            <div class="virtual-balance">
+                <span class="label">Paper Balance</span>
+                <span class="value">$100.00</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ─── Main content ───────────────────────────────────── -->
+    <main class="dashboard-grid">
+
+        <!-- LEFT: Chart column -->
+        <section class="main-content">
+
+            <!-- Candlestick + Forecast Chart -->
+            <div class="card chart-card animate__animated animate__fadeInUp">
+                <div class="card-header">
+                    <div class="stock-title">
+                        <h1 id="stockName">NVIDIA Corporation</h1>
+                        <div class="stock-meta">
+                            <span id="stockTicker" class="ticker-badge">NVDA</span>
+                            <span id="currentPrice" class="price-value">$---</span>
+                            <span id="priceChange" class="price-change positive">---</span>
+                        </div>
+                    </div>
+                    <div class="chart-controls">
+                        <button class="active">1Y</button>
+                    </div>
+                </div>
+                <div id="mainChart"></div>
+            </div>
+
+            <!-- Bottom row: Forecast + Agent -->
+            <div class="bottom-grid">
+
+                <!-- AI Forecast -->
+                <div class="card forecast-card animate__animated animate__fadeInUp" style="animation-delay:.1s">
+                    <h3><i data-lucide="trending-up"></i> AI Forecast — Next 7 Days</h3>
+                    <div id="forecastList" class="forecast-list">
+                        <div class="loading-shimmer"></div>
+                    </div>
+                </div>
+
+                <!-- Trading Agent -->
+                <div class="card agent-card animate__animated animate__fadeInUp" style="animation-delay:.2s">
+                    <h3><i data-lucide="cpu"></i> Trading Agent Alpha</h3>
+                    <div class="agent-status">
+                        <div class="status-indicator online"></div>
+                        <span>Signals from RSI-14 &amp; MA Cross</span>
+                    </div>
+                    <div class="signal-box">
+                        <span class="signal-label">Current Signal</span>
+                        <span class="signal-value" id="signalValue">ANALYZING…</span>
+                    </div>
+                    <button class="btn-primary" id="autoTradeBtn">🤖 Enable Auto-Trading</button>
+                </div>
+            </div>
+
+            <!-- Trade Log -->
+            <div class="card animate__animated animate__fadeInUp" style="animation-delay:.3s; margin-top:1.5rem">
+                <h3><i data-lucide="list"></i> Agent Trade Log</h3>
+                <ul id="tradeLog" class="trade-log">
+                    <li style="color:var(--text-dim)">No trades yet — enable auto-trading to begin.</li>
+                </ul>
+            </div>
+
+        </section>
+
+        <!-- RIGHT: Sidebar -->
+        <aside class="sidebar">
+
+            <!-- Company Profile -->
+            <div class="card info-card animate__animated animate__fadeInRight">
+                <h3><i data-lucide="info"></i> Company Profile</h3>
+                <p id="companySummary" class="scrolling-text">
+                    Enter a ticker and click Analyze to see the company profile…
+                </p>
+            </div>
+
+            <!-- Technical Signals -->
+            <div class="card signals-card animate__animated animate__fadeInRight" style="animation-delay:.1s">
+                <h3><i data-lucide="activity"></i> Technical Signals</h3>
+                <ul class="signal-list">
+                    <li>
+                        <span>RSI (14)</span>
+                        <span id="rsiDisplay" class="status neutral">---</span>
+                    </li>
+                    <li>
+                        <span>MA20 vs MA50</span>
+                        <span id="maDisplay" class="status neutral">---</span>
+                    </li>
+                    <li>
+                        <span>Bollinger Bands</span>
+                        <span class="status neutral">Mid Range</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Disclaimer -->
+            <div class="card disclaimer-card animate__animated animate__fadeInRight" style="animation-delay:.2s">
+                <h3><i data-lucide="alert-triangle"></i> Important Disclaimer</h3>
+                <p>This tool uses <strong>paper (virtual) money only</strong>. No real funds are invested. AI forecasts
+                    are based on linear regression of historical data and are <strong>not financial advice</strong>.
+                    Stock markets involve significant risk and past patterns do not guarantee future performance.</p>
+            </div>
+
+        </aside>
+    </main>
+
+    <footer class="footer">
+        <p>© 2026 AlphaTrade AI &nbsp;·&nbsp; For Educational Purposes Only &nbsp;·&nbsp; No Real Money Involved</p>
+    </footer>
+
+    <script src="/static/script.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+
+</html>
