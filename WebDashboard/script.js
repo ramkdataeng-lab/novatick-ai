@@ -124,7 +124,7 @@ function renderChart(history, forecast) {
             { name: 'AI Forecast', type: 'line', data: forecastLine },
         ],
         chart: {
-            height: 420,
+            height: 280,
             background: 'transparent',
             toolbar: { show: false },
             animations: { enabled: true, speed: 600 },
