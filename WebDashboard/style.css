@@ -362,8 +362,19 @@ body {
     color: var(--text-main);
 }
 
+/* Make agent header text and icon bright and flashy */
+.agent-card h3 span {
+    color: #00e5ff;
+    /* Neon cyan */
+    text-shadow: 0 0 12px rgba(0, 229, 255, 0.5);
+    font-weight: 700;
+}
+
+.agent-card h3 span svg {
+    filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.7));
+}
+
 /* Revert h3 and tooltip icon colors inside agent card back to light */
-.agent-card h3,
 .agent-card .info-icon,
 .agent-card .agent-status {
     color: var(--text-dim);
