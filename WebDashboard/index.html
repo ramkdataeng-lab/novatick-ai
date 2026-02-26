@@ -44,12 +44,19 @@
             <input type="text" id="tickerInput" placeholder="Ticker (NVDA, TSLA, BTC-USD…)" value="NVDA">
             <button id="analyzeBtn">Analyze</button>
         </div>
-        <div class="wallet-info">
+        <!-- Wallet + Balance -->
+        <div class="wallet-info" id="walletInfo">
             <i data-lucide="wallet"></i>
-            <div class="virtual-balance">
+            <div class="virtual-balance" id="balanceClickable" title="Click to set balance" style="cursor:pointer;">
                 <span class="label">Paper Balance</span>
-                <span class="value">$100.00</span>
+                <span class="value" id="balanceDisplay">$100.00</span>
             </div>
+        </div>
+        <!-- User Auth -->
+        <div id="authArea">
+            <button class="btn-auth" id="loginBtn"><i data-lucide="user"
+                    style="width:14px;height:14px;vertical-align:middle;margin-right:4px;"></i><span
+                    id="authLabel">Login</span></button>
         </div>
     </nav>
 
@@ -212,13 +219,54 @@
         </div>
     </div>
 
+    <!-- ─── Login / Register Modal ───────────────────────────── -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal-content animate__animated animate__zoomIn animate__faster" style="max-width:420px;">
+            <button class="modal-close" id="closeAuthModal"><i data-lucide="x"></i></button>
+            <div id="authTabs" style="display:flex;gap:1rem;margin-bottom:1.5rem;">
+                <button class="auth-tab active" id="tabLogin" onclick="switchTab('login')">Login</button>
+                <button class="auth-tab" id="tabRegister" onclick="switchTab('register')">Register</button>
+            </div>
+            <!-- Login Form -->
+            <div id="loginForm">
+                <h2 style="margin-bottom:1rem;">Welcome Back</h2>
+                <input class="auth-input" type="text" id="loginUsername" placeholder="Username">
+                <input class="auth-input" type="password" id="loginPassword" placeholder="Password">
+                <p id="loginError" style="color:var(--negative);font-size:0.8rem;min-height:1rem;"></p>
+                <button class="btn-primary" onclick="doLogin()" style="margin-top:0.5rem;">Login</button>
+            </div>
+            <!-- Register Form -->
+            <div id="registerForm" style="display:none;">
+                <h2 style="margin-bottom:1rem;">Create Account</h2>
+                <input class="auth-input" type="text" id="regUsername" placeholder="Username">
+                <input class="auth-input" type="email" id="regEmail" placeholder="Email">
+                <input class="auth-input" type="password" id="regPassword" placeholder="Password">
+                <p id="registerError" style="color:var(--negative);font-size:0.8rem;min-height:1rem;"></p>
+                <button class="btn-primary" onclick="doRegister()" style="margin-top:0.5rem;">Create Account</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── Set Balance Modal ────────────────────────────────── -->
+    <div class="modal-overlay" id="balanceModal">
+        <div class="modal-content animate__animated animate__zoomIn animate__faster" style="max-width:360px;">
+            <button class="modal-close" id="closeBalanceModal"><i data-lucide="x"></i></button>
+            <h2 style="margin-bottom:1rem;">Set Paper Balance</h2>
+            <p style="color:var(--text-dim);font-size:0.85rem;margin-bottom:1rem;">Set your virtual starting balance for
+                paper trading. This is simulated money only.</p>
+            <input class="auth-input" type="number" id="newBalanceInput" placeholder="e.g. 10000" min="1">
+            <button class="btn-primary" onclick="setCustomBalance()" style="margin-top:1rem;">Set Balance</button>
+        </div>
+    </div>
+
     <script src="/static/script.js"></script>
     <script>
         lucide.createIcons();
+
+        // ─── How To Use Modal ────────────────────────────────────────
         document.getElementById('howToUseLink').addEventListener('click', (e) => {
             e.preventDefault();
-            const overlay = document.getElementById('howToUseModal');
-            overlay.classList.add('active');
+            document.getElementById('howToUseModal').classList.add('active');
         });
         document.getElementById('closeModalBtn').addEventListener('click', () => {
             document.getElementById('howToUseModal').classList.remove('active');
@@ -226,6 +274,122 @@
         document.getElementById('howToUseModal').addEventListener('click', (e) => {
             if (e.target === e.currentTarget) e.target.classList.remove('active');
         });
+
+        // ─── Auth Logic (localStorage) ───────────────────────────────
+        function getUsers() { return JSON.parse(localStorage.getItem('nt_users') || '{}'); }
+        function saveUsers(u) { localStorage.setItem('nt_users', JSON.stringify(u)); }
+        function getCurrentUser() { return localStorage.getItem('nt_current_user'); }
+        function setCurrentUser(u) { localStorage.setItem('nt_current_user', u); }
+
+        function updateAuthUI() {
+            const user = getCurrentUser();
+            const label = document.getElementById('authLabel');
+            if (user) {
+                label.textContent = `👤 ${user}`;
+            } else {
+                label.textContent = 'Login';
+            }
+            lucide.createIcons();
+        }
+
+        function switchTab(tab) {
+            document.getElementById('loginForm').style.display = tab === 'login' ? '' : 'none';
+            document.getElementById('registerForm').style.display = tab === 'register' ? '' : 'none';
+            document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
+            document.getElementById('tabRegister').classList.toggle('active', tab === 'register');
+        }
+
+        function doLogin() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const users = getUsers();
+            if (!users[username] || users[username].password !== password) {
+                document.getElementById('loginError').textContent = 'Invalid username or password.';
+                return;
+            }
+            setCurrentUser(username);
+            // Restore saved balance
+            if (users[username].balance !== undefined) {
+                paperBalance = users[username].balance;
+                document.getElementById('balanceDisplay').textContent = '$' + paperBalance.toFixed(2);
+                document.querySelector('.virtual-balance .value').textContent = '$' + paperBalance.toFixed(2);
+            }
+            document.getElementById('authModal').classList.remove('active');
+            updateAuthUI();
+        }
+
+        function doRegister() {
+            const username = document.getElementById('regUsername').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPassword').value;
+            if (!username || !email || !password) {
+                document.getElementById('registerError').textContent = 'All fields are required.';
+                return;
+            }
+            const users = getUsers();
+            if (users[username]) {
+                document.getElementById('registerError').textContent = 'Username already taken.';
+                return;
+            }
+            users[username] = { email, password, balance: 100 };
+            saveUsers(users);
+            setCurrentUser(username);
+            document.getElementById('authModal').classList.remove('active');
+            updateAuthUI();
+        }
+
+        function doLogout() {
+            localStorage.removeItem('nt_current_user');
+            updateAuthUI();
+        }
+
+        // ─── Login Button toggle ─────────────────────────────────────
+        document.getElementById('loginBtn').addEventListener('click', () => {
+            const user = getCurrentUser();
+            if (user) {
+                if (confirm(`Logout as ${user}?`)) doLogout();
+            } else {
+                document.getElementById('authModal').classList.add('active');
+            }
+        });
+
+        document.getElementById('closeAuthModal').addEventListener('click', () => {
+            document.getElementById('authModal').classList.remove('active');
+        });
+        document.getElementById('authModal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) e.target.classList.remove('active');
+        });
+
+        // ─── Balance Modal ───────────────────────────────────────────
+        document.getElementById('balanceClickable').addEventListener('click', () => {
+            document.getElementById('newBalanceInput').value = paperBalance.toFixed(2);
+            document.getElementById('balanceModal').classList.add('active');
+        });
+
+        function setCustomBalance() {
+            const val = parseFloat(document.getElementById('newBalanceInput').value);
+            if (isNaN(val) || val <= 0) { alert('Please enter a valid amount.'); return; }
+            paperBalance = val;
+            document.getElementById('balanceDisplay').textContent = '$' + paperBalance.toFixed(2);
+            document.querySelector('.virtual-balance .value').textContent = '$' + paperBalance.toFixed(2);
+            // Save to user account if logged in
+            const user = getCurrentUser();
+            if (user) {
+                const users = getUsers();
+                if (users[user]) { users[user].balance = val; saveUsers(users); }
+            }
+            document.getElementById('balanceModal').classList.remove('active');
+        }
+
+        document.getElementById('closeBalanceModal').addEventListener('click', () => {
+            document.getElementById('balanceModal').classList.remove('active');
+        });
+        document.getElementById('balanceModal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) e.target.classList.remove('active');
+        });
+
+        // ─── Init ────────────────────────────────────────────────────
+        updateAuthUI();
     </script>
 </body>
 
