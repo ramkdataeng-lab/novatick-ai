@@ -79,9 +79,13 @@ body {
 }
 
 .logo-img {
-    height: 36px;
+    height: 48px;
     width: auto;
+    max-width: 200px;
     object-fit: contain;
+    mix-blend-mode: screen;
+    /* removes white background on dark navbar */
+    filter: brightness(1.1) contrast(1.1);
 }
 
 .ai-tag {
