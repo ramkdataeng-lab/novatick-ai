@@ -4,6 +4,7 @@ let holdings = {};   // { ticker: { shares, avgPrice } }
 let tradeLog = [];
 let autoTrading = false;
 let autoInterval = null;
+let currentHistory = [];
 
 // ─── Fetch & update UI ────────────────────────────────────────────────────────
 async function fetchStockData(ticker) {
@@ -78,7 +79,14 @@ function updateUI(data) {
         `$${paperBalance.toFixed(2)}`;
 
     // Render chart
+    currentHistory = data.history;
     renderChart(data.history, data.forecast);
+
+    // Zoom chart if a period is selected
+    const activeBtn = document.querySelector('.chart-controls button.active');
+    if (activeBtn) {
+        zoomChart(activeBtn.dataset.period);
+    }
 
     // If auto-trading is on, act on the signal
     if (autoTrading) {
@@ -139,6 +147,22 @@ function renderChart(history, forecast) {
     mainChart.render();
 }
 
+function zoomChart(period) {
+    if (!mainChart || currentHistory.length === 0) return;
+    const lastDate = new Date(currentHistory.at(-1).date).getTime();
+    let minDate;
+    const DAY = 24 * 60 * 60 * 1000;
+
+    if (period === '1W') minDate = lastDate - 7 * DAY;
+    else if (period === '2W') minDate = lastDate - 14 * DAY;
+    else if (period === '1M') minDate = lastDate - 30 * DAY;
+    else if (period === '6M') minDate = lastDate - 180 * DAY;
+    else minDate = new Date(currentHistory[0].date).getTime();
+
+    const maxDate = lastDate + 8 * DAY; // Include 7-day forecast
+    mainChart.zoomX(minDate, maxDate);
+}
+
 // ─── Paper-trading agent ──────────────────────────────────────────────────────
 function executeAgentAction(ticker, price, signal) {
     const timestamp = new Date().toLocaleTimeString();
@@ -186,6 +210,14 @@ function renderTradeLog() {
 }
 
 // ─── Event listeners ──────────────────────────────────────────────────────────
+document.querySelectorAll('.chart-controls button').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.chart-controls button').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        zoomChart(e.target.dataset.period);
+    });
+});
+
 document.getElementById('analyzeBtn').addEventListener('click', () => {
     const ticker = document.getElementById('tickerInput').value.trim();
     if (ticker) fetchStockData(ticker);

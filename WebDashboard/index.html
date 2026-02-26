@@ -57,35 +57,43 @@
                         </div>
                     </div>
                     <div class="chart-controls">
-                        <button class="active">1Y</button>
+                        <button data-period="1W">1W</button>
+                        <button class="active" data-period="2W">2W</button>
+                        <button data-period="1M">1M</button>
+                        <button data-period="6M">6M</button>
                     </div>
                 </div>
                 <div id="mainChart"></div>
             </div>
 
-            <!-- Bottom row: Forecast + Agent -->
+            <!-- Bottom row: Company Profile + Technical Signals -->
             <div class="bottom-grid">
 
-                <!-- AI Forecast -->
-                <div class="card forecast-card animate__animated animate__fadeInUp" style="animation-delay:.1s">
-                    <h3><i data-lucide="trending-up"></i> AI Forecast — Next 7 Days</h3>
-                    <div id="forecastList" class="forecast-list">
-                        <div class="loading-shimmer"></div>
-                    </div>
+                <!-- Company Profile -->
+                <div class="card info-card animate__animated animate__fadeInUp" style="animation-delay:.1s">
+                    <h3><i data-lucide="info"></i> Company Profile</h3>
+                    <p id="companySummary" class="scrolling-text">
+                        Enter a ticker and click Analyze to see the company profile…
+                    </p>
                 </div>
 
-                <!-- Trading Agent -->
-                <div class="card agent-card animate__animated animate__fadeInUp" style="animation-delay:.2s">
-                    <h3><i data-lucide="cpu"></i> Trading Agent Alpha</h3>
-                    <div class="agent-status">
-                        <div class="status-indicator online"></div>
-                        <span>Signals from RSI-14 &amp; MA Cross</span>
-                    </div>
-                    <div class="signal-box">
-                        <span class="signal-label">Current Signal</span>
-                        <span class="signal-value" id="signalValue">ANALYZING…</span>
-                    </div>
-                    <button class="btn-primary" id="autoTradeBtn">🤖 Enable Auto-Trading</button>
+                <!-- Technical Signals -->
+                <div class="card signals-card animate__animated animate__fadeInUp" style="animation-delay:.2s">
+                    <h3><i data-lucide="activity"></i> Technical Signals</h3>
+                    <ul class="signal-list">
+                        <li>
+                            <span>RSI (14)</span>
+                            <span id="rsiDisplay" class="status neutral">---</span>
+                        </li>
+                        <li>
+                            <span>MA20 vs MA50</span>
+                            <span id="maDisplay" class="status neutral">---</span>
+                        </li>
+                        <li>
+                            <span>Bollinger Bands</span>
+                            <span class="status neutral">Mid Range</span>
+                        </li>
+                    </ul>
                 </div>
             </div>
 
@@ -102,31 +110,26 @@
         <!-- RIGHT: Sidebar -->
         <aside class="sidebar">
 
-            <!-- Company Profile -->
-            <div class="card info-card animate__animated animate__fadeInRight">
-                <h3><i data-lucide="info"></i> Company Profile</h3>
-                <p id="companySummary" class="scrolling-text">
-                    Enter a ticker and click Analyze to see the company profile…
-                </p>
+            <!-- AI Forecast -->
+            <div class="card forecast-card animate__animated animate__fadeInRight">
+                <h3><i data-lucide="trending-up"></i> AI Forecast — Next 7 Days</h3>
+                <div id="forecastList" class="forecast-list">
+                    <div class="loading-shimmer"></div>
+                </div>
             </div>
 
-            <!-- Technical Signals -->
-            <div class="card signals-card animate__animated animate__fadeInRight" style="animation-delay:.1s">
-                <h3><i data-lucide="activity"></i> Technical Signals</h3>
-                <ul class="signal-list">
-                    <li>
-                        <span>RSI (14)</span>
-                        <span id="rsiDisplay" class="status neutral">---</span>
-                    </li>
-                    <li>
-                        <span>MA20 vs MA50</span>
-                        <span id="maDisplay" class="status neutral">---</span>
-                    </li>
-                    <li>
-                        <span>Bollinger Bands</span>
-                        <span class="status neutral">Mid Range</span>
-                    </li>
-                </ul>
+            <!-- Trading Agent -->
+            <div class="card agent-card animate__animated animate__fadeInRight" style="animation-delay:.1s">
+                <h3><i data-lucide="cpu"></i> Trading Agent Alpha</h3>
+                <div class="agent-status">
+                    <div class="status-indicator online"></div>
+                    <span>Signals from RSI-14 &amp; MA Cross</span>
+                </div>
+                <div class="signal-box">
+                    <span class="signal-label">Current Signal</span>
+                    <span class="signal-value" id="signalValue">ANALYZING…</span>
+                </div>
+                <button class="btn-primary" id="autoTradeBtn">🤖 Enable Auto-Trading</button>
             </div>
 
             <!-- Disclaimer -->
