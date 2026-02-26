@@ -101,6 +101,25 @@
                         </li>
                     </ul>
                 </div>
+
+                <!-- Market News -->
+                <div class="card news-card animate__animated animate__fadeInUp" style="animation-delay:.3s">
+                    <h3><i data-lucide="newspaper"></i> Market News</h3>
+                    <ul class="signal-list">
+                        <li>
+                            <span>Sentiment</span>
+                            <span class="status positive">Bullish</span>
+                        </li>
+                        <li>
+                            <span>Media Buzz</span>
+                            <span class="status neutral">Average</span>
+                        </li>
+                        <li>
+                            <span>Analyst Rating</span>
+                            <span class="status positive">Buy</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
 
             <!-- Trade Log -->
@@ -116,23 +135,8 @@
         <!-- RIGHT: Sidebar -->
         <aside class="sidebar">
 
-            <!-- AI Forecast -->
-            <div class="card forecast-card animate__animated animate__fadeInRight">
-                <h3 class="card-heading-with-info">
-                    <span><i data-lucide="trending-up"></i> AI Forecast — Next 7 Days</span>
-                    <div class="info-tooltip">
-                        <i data-lucide="help-circle" class="info-icon"></i>
-                        <div class="tooltip-text">Based on 1-year linear regression. Projects long-term trends but
-                            ignores short-term volatility.</div>
-                    </div>
-                </h3>
-                <div id="forecastList" class="forecast-list">
-                    <div class="loading-shimmer"></div>
-                </div>
-            </div>
-
             <!-- Trading Agent -->
-            <div class="card agent-card animate__animated animate__fadeInRight" style="animation-delay:.1s">
+            <div class="card agent-card animate__animated animate__fadeInRight">
                 <h3 class="card-heading-with-info">
                     <span><i data-lucide="cpu"></i> Trading Agent Alpha</span>
                     <div class="info-tooltip">
@@ -150,6 +154,21 @@
                     <span class="signal-value" id="signalValue">ANALYZING…</span>
                 </div>
                 <button class="btn-primary" id="autoTradeBtn">🤖 Enable Auto-Trading</button>
+            </div>
+
+            <!-- AI Forecast -->
+            <div class="card forecast-card animate__animated animate__fadeInRight" style="animation-delay:.1s">
+                <h3 class="card-heading-with-info">
+                    <span><i data-lucide="trending-up"></i> AI Forecast — Next 7 Days</span>
+                    <div class="info-tooltip">
+                        <i data-lucide="help-circle" class="info-icon"></i>
+                        <div class="tooltip-text">Based on 1-year linear regression. Projects long-term trends but
+                            ignores short-term volatility.</div>
+                    </div>
+                </h3>
+                <div id="forecastList" class="forecast-list">
+                    <div class="loading-shimmer"></div>
+                </div>
             </div>
 
             <!-- Disclaimer -->
