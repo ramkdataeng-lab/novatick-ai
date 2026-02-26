@@ -140,11 +140,15 @@ function renderChart(history, forecast) {
         grid: { borderColor: 'rgba(255,255,255,0.05)' },
         legend: {
             position: 'top',
-            horizontalAlign: 'left',
+            horizontalAlign: 'right',
             floating: true,
-            offsetY: 10,
-            offsetX: 10,
-            labels: { colors: '#a1a1aa' }
+            offsetY: 0,
+            offsetX: -5,
+            labels: { colors: '#e2e8f0' },
+            fontSize: '13px',
+            fontFamily: 'Inter, sans-serif',
+            markers: { width: 10, height: 10, radius: 10, offsetX: -4 },
+            itemMargin: { horizontal: 15, vertical: 0 }
         },
         tooltip: { theme: 'dark' },
     };
