@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 50 Signals | NovaTick AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <style>
+        .top50-grid {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            margin-top: 1rem;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .data-table th {
+            color: var(--text-dim);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .data-table tbody tr {
+            transition: background 0.2s;
+        }
+
+        .data-table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .signal-badge {
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            display: inline-block;
+            text-align: center;
+            min-width: 70px;
+        }
+
+        .signal-buy {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--positive);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .signal-sell {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--negative);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .signal-hold {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .loading-row td {
+            color: var(--text-dim);
+            font-style: italic;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+            margin-top: 1rem;
+            overflow: hidden;
+            display: none;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.3s;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="glass-bg"></div>
+
+    <nav class="navbar animate__animated animate__fadeInDown">
+        <a href="/" class="logo">
+            <i data-lucide="zap" class="logo-icon"></i>
+            <span>NovaTick <span class="ai-tag">AI</span></span>
+        </a>
+        <div class="nav-links">
+            <a href="/"><i data-lucide="layout-dashboard"
+                    style="width:16px;height:16px;vertical-align:middle;margin-right:4px;"></i>Dashboard</a>
+            <a href="/top50.html" style="color:white;"><i data-lucide="list"
+                    style="width:16px;height:16px;vertical-align:middle;margin-right:4px;"></i>Top 50 Signals</a>
+        </div>
+        <div style="flex:1"></div>
+    </nav>
+
+    <main class="top50-grid animate__animated animate__fadeIn">
+        <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+                <div>
+                    <h1 style="font-size: 1.8rem; margin-bottom: 0.5rem;"><i data-lucide="bar-chart-2"
+                            style="color:var(--primary); vertical-align:middle;"></i> Top 50 Stocks Watchlist</h1>
+                    <p style="color:var(--text-dim); font-size:0.9rem;">Live Agent Alpha signals and indicators across
+                        major market movers.</p>
+                </div>
+                <button id="scanBtn" class="btn-primary" style="width:auto; padding:0.6rem 1.2rem;">Start Deep
+                    Scan</button>
+            </div>
+
+            <div class="progress-bar-container" id="progressContainer">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <div style="overflow-x:auto;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Ticker</th>
+                            <th>Current Price</th>
+                            <th>RSI (14)</th>
+                            <th>MA Trend</th>
+                            <th>Agent Alpha</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Populated via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+        const top50Tickers = [
+            "AAPL", "MSFT", "GOOGL", "AMZN", "NVDA", "META", "TSLA", "BRK-B", "LLY", "V",
+            "JNJ", "XOM", "WMT", "JPM", "MA", "PG", "AVGO", "UNH", "HD", "CVX",
+            "MRK", "KO", "PEP", "COST", "ABBV", "BAC", "MCD", "TMO", "CSCO", "CRM",
+            "ACN", "NFLX", "LIN", "AMD", "ADBE", "ABT", "DHR", "TXN", "WFC", "PM",
+            "INTC", "QCOM", "NKE", "VZ", "DIS", "CMCSA", "PFE", "RTX", "INTU", "COP"
+        ];
+
+        const tbody = document.getElementById("tableBody");
+        const scanBtn = document.getElementById("scanBtn");
+        const progressBar = document.getElementById("progressBar");
+        const progressContainer = document.getElementById("progressContainer");
+
+        // Initialize table
+        top50Tickers.forEach(ticker => {
+            const tr = document.createElement("tr");
+            tr.id = `row-${ticker}`;
+            tr.innerHTML = `
+                <td><span class="ticker-badge">${ticker}</span></td>
+                <td id="price-${ticker}">-</td>
+                <td id="rsi-${ticker}">-</td>
+                <td id="ma-${ticker}">-</td>
+                <td id="signal-${ticker}">-</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        async function fetchTicker(ticker) {
+            try {
+                const res = await fetch(`/api/stock/${ticker}`);
+                if (!res.ok) throw new Error("Failed");
+                const data = await res.json();
+
+                document.getElementById(`price-${ticker}`).textContent = '$' + data.current_price.toFixed(2);
+
+                const rsiTd = document.getElementById(`rsi-${ticker}`);
+                rsiTd.textContent = data.indicators.rsi;
+                if (data.indicators.rsi < 30) rsiTd.style.color = 'var(--positive)';
+                if (data.indicators.rsi > 70) rsiTd.style.color = 'var(--negative)';
+
+                const maTd = document.getElementById(`ma-${ticker}`);
+                maTd.textContent = data.indicators.ma_trend;
+                maTd.style.color = data.indicators.ma_trend === 'Bullish' ? 'var(--positive)' : 'var(--negative)';
+
+                const sigClass = data.agent_signal === 'BUY' ? 'signal-buy' : (data.agent_signal === 'SELL' ? 'signal-sell' : 'signal-hold');
+                document.getElementById(`signal-${ticker}`).innerHTML = `<span class="signal-badge ${sigClass}">${data.agent_signal}</span>`;
+            } catch (e) {
+                document.getElementById(`price-${ticker}`).textContent = "Error";
+            }
+        }
+
+        scanBtn.addEventListener("click", async () => {
+            scanBtn.disabled = true;
+            scanBtn.textContent = "Scanning...";
+            progressContainer.style.display = "block";
+            progressBar.style.width = "0%";
+
+            // To be gentle on Vercel API and avoid timeouts, fetch in chunks of 5
+            const chunkSize = 5;
+            let completed = 0;
+
+            for (let i = 0; i < top50Tickers.length; i += chunkSize) {
+                const chunk = top50Tickers.slice(i, i + chunkSize);
+                await Promise.all(chunk.map(ticker => fetchTicker(ticker)));
+                completed += chunk.length;
+                progressBar.style.width = `${(completed / top50Tickers.length) * 100}%`;
+            }
+
+            scanBtn.textContent = "Scan Complete";
+            scanBtn.style.background = "var(--positive)";
+        });
+    </script>
+</body>
+
+</html>

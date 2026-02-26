@@ -21,9 +21,15 @@
 
     <!-- ─── Navbar ─────────────────────────────────────────── -->
     <nav class="navbar animate__animated animate__fadeInDown">
-        <div class="logo">
+        <a href="/" class="logo">
             <i data-lucide="zap" class="logo-icon"></i>
             <span>NovaTick <span class="ai-tag">AI</span></span>
+        </a>
+        <div class="nav-links">
+            <a href="#" id="howToUseLink"><i data-lucide="book-open"
+                    style="width:16px;height:16px;vertical-align:middle;margin-right:4px;"></i>How to Use</a>
+            <a href="/top50.html"><i data-lucide="list"
+                    style="width:16px;height:16px;vertical-align:middle;margin-right:4px;"></i>Top 50 Signals</a>
         </div>
         <div class="search-bar">
             <i data-lucide="search"></i>
@@ -147,8 +153,39 @@
         <p>© 2026 NovaTick AI &nbsp;·&nbsp; For Educational Purposes Only &nbsp;·&nbsp; No Real Money Involved</p>
     </footer>
 
+    <!-- How to Use Modal -->
+    <div class="modal-overlay" id="howToUseModal">
+        <div class="modal-content animate__animated animate__zoomIn animate__faster">
+            <button class="modal-close" id="closeModalBtn"><i data-lucide="x"></i></button>
+            <h2>How to Use NovaTick AI</h2>
+            <ol>
+                <li><strong>Analyze Stocks:</strong> Enter any stock ticker (e.g., TSLA, AAPL) in the top search bar and
+                    click <em>Analyze</em>.</li>
+                <li><strong>Review AI Forecast:</strong> Check the right sidebar for our 7-day predictive linear
+                    regression forecast.</li>
+                <li><strong>View Trading Agent Signal:</strong> The agent automatically evaluates technical indicators
+                    (MA20/50 cross and RSI-14) to give you a live BUY, SELL, or HOLD signal.</li>
+                <li><strong>Use Auto-Trading:</strong> Click the "Enable Auto-Trading" button to let the Agent simulate
+                    paper trades automatically every 60 seconds using your $100 virtual balance.</li>
+            </ol>
+        </div>
+    </div>
+
     <script src="/static/script.js"></script>
-    <script>lucide.createIcons();</script>
+    <script>
+        lucide.createIcons();
+        document.getElementById('howToUseLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            const overlay = document.getElementById('howToUseModal');
+            overlay.classList.add('active');
+        });
+        document.getElementById('closeModalBtn').addEventListener('click', () => {
+            document.getElementById('howToUseModal').classList.remove('active');
+        });
+        document.getElementById('howToUseModal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) e.target.classList.remove('active');
+        });
+    </script>
 </body>
 
 </html>

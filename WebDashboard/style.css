@@ -61,6 +61,8 @@ body {
     gap: 0.5rem;
     white-space: nowrap;
     flex-shrink: 0;
+    text-decoration: none;
+    color: var(--text-main);
 }
 
 .logo-icon {
@@ -75,6 +77,24 @@ body {
     font-size: 0.65rem;
     letter-spacing: 1px;
     vertical-align: middle;
+}
+
+.nav-links {
+    display: flex;
+    gap: 1.25rem;
+    align-items: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.nav-links a:hover {
+    color: white;
 }
 
 .search-bar {
@@ -309,8 +329,9 @@ body {
 }
 
 .signal-box {
-    background: rgba(99, 102, 241, 0.1);
-    border: 1px dashed rgba(99, 102, 241, 0.5);
+    background: rgba(15, 23, 42, 0.8); /* Dark slate background */
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
     padding: 1.25rem;
     border-radius: 14px;
     text-align: center;
@@ -455,6 +476,72 @@ footer {
     font-size: 0.78rem;
     border-top: 1px solid var(--border);
     margin-top: 1rem;
+}
+
+/* ─── Modal ───────────────────────────────────────────────────────────────── */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.modal-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    background: var(--bg-dark);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    width: 90%;
+    max-width: 600px;
+    padding: 2rem;
+    position: relative;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    transform: scale(0.95);
+    transition: transform 0.3s;
+}
+
+.modal-overlay.active .modal-content {
+    transform: scale(1);
+}
+
+.modal-close {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.2rem;
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.modal-close:hover {
+    color: white;
+}
+
+.modal-content h2 {
+    margin-bottom: 1rem;
+    color: var(--primary);
+}
+
+.modal-content ol {
+    margin-left: 1.5rem;
+    color: var(--text-dim);
+    line-height: 1.8;
+}
+
+.modal-content li strong {
+    color: var(--text-main);
 }
 
 /* ─── Responsive ──────────────────────────────────────────────────────────── */
