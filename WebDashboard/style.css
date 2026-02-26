@@ -78,6 +78,12 @@ body {
     color: var(--primary);
 }
 
+.logo-img {
+    height: 36px;
+    width: auto;
+    object-fit: contain;
+}
+
 .ai-tag {
     background: var(--primary);
     color: white;
