@@ -1,4 +1,30 @@
+# ── Python ────────────────────────────────────────────────────
 .env
 __pycache__/
 *.pyc
 trades.log
+
+# ── Xcode / XcodeGen generated (do NOT commit these) ──────────
+ios/*.xcodeproj/
+ios/*.xcworkspace/
+ios/build/
+ios/DerivedData/
+
+# ── CocoaPods (not used yet, but guard against accidental add) ──
+ios/Pods/
+ios/Podfile.lock
+
+# ── Fastlane runtime artefacts ────────────────────────────────
+ios/fastlane/report.xml
+ios/fastlane/Preview.html
+ios/fastlane/screenshots/
+ios/fastlane/test_output/
+
+# ── Xcode user-specific settings ──────────────────────────────
+*.xcuserstate
+xcuserdata/
+*.xccheckout
+*.moved-aside
+
+# ── macOS noise ───────────────────────────────────────────────
+.DS_Store

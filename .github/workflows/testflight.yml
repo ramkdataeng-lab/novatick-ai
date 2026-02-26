@@ -1,0 +1,55 @@
+name: Build & Deploy to TestFlight
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:   # allow manual trigger from GitHub UI
+
+jobs:
+  build-ios:
+    name: Build and Upload to TestFlight
+    runs-on: macos-latest
+
+    steps:
+      # ── 1. Checkout ──────────────────────────────────────────────────
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # ── 2. Set up Ruby + Bundler ─────────────────────────────────────
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.2"
+          bundler-cache: true
+          working-directory: ios
+
+      # ── 3. Install XcodeGen ──────────────────────────────────────────
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      # ── 4. Generate Xcode project from project.yml ───────────────────
+      - name: Generate Xcode project
+        working-directory: ios
+        run: xcodegen generate
+
+      # ── 5. Run Fastlane beta lane ────────────────────────────────────
+      - name: Fastlane – Build & Upload to TestFlight
+        working-directory: ios
+        env:
+          # ── App Store Connect API Key ──────────────────────────────
+          APP_STORE_CONNECT_API_KEY_ID:       ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_ISSUER_ID:    ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_CONTENT:  ${{ secrets.APP_STORE_CONNECT_API_KEY_CONTENT }}
+          # ── Apple Account ──────────────────────────────────────────
+          APPLE_ID:                           ${{ secrets.APPLE_ID }}
+          ITC_TEAM_ID:                        ${{ secrets.ITC_TEAM_ID }}
+          TEAM_ID:                            ${{ secrets.TEAM_ID }}
+          # ── Match (certificate sync) ───────────────────────────────
+          MATCH_PASSWORD:                     ${{ secrets.MATCH_PASSWORD }}
+          MATCH_GIT_BASIC_AUTHORIZATION:      ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
+          MATCH_GIT_URL:                      ${{ secrets.MATCH_GIT_URL }}
+          PROVISIONING_PROFILE_SPECIFIER:     ${{ secrets.PROVISIONING_PROFILE_SPECIFIER }}
+          # ── Build number from run number ──────────────────────────
+          GITHUB_RUN_NUMBER:                  ${{ github.run_number }}
+        run: bundle exec fastlane beta
